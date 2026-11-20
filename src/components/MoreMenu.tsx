@@ -20,6 +20,7 @@ import { useToast } from './Toast';
 import { exportLedgerToCSV } from '../utils/csv';
 import { exportLedgerToExcel } from '../utils/excel';
 import { translations } from '../utils/i18n';
+import { isValidUpiId } from '../utils/whatsapp';
 import { BackupVaultModal } from './BackupVaultModal';
 
 interface Props {
@@ -73,8 +74,13 @@ export const MoreMenu: React.FC<Props> = ({ onNavigateToImport, onNavigateToOver
 
   const handleSaveShopSettings = (e: React.FormEvent) => {
     e.preventDefault();
-    setShopName(shopInput.trim() || 'My Shop');
-    setUpiId(upiInput.trim());
+    const cleanUpi = upiInput.trim();
+    if (cleanUpi && !isValidUpiId(cleanUpi)) {
+      showToast(t.valValidUpi, 'error');
+      return;
+    }
+    setShopName(shopInput.trim() || t.defaultShop);
+    setUpiId(cleanUpi);
     setEditingShop(false);
     showToast('Shop details updated!', 'success');
   };
@@ -85,7 +91,12 @@ export const MoreMenu: React.FC<Props> = ({ onNavigateToImport, onNavigateToOver
       showToast('Shop name is required', 'error');
       return;
     }
-    createShop(newShopName.trim(), newShopUpi.trim());
+    const cleanUpi = newShopUpi.trim();
+    if (cleanUpi && !isValidUpiId(cleanUpi)) {
+      showToast(t.valValidUpi, 'error');
+      return;
+    }
+    createShop(newShopName.trim(), cleanUpi || 'exampleupi@hdjcbank');
     setIsCreatingShop(false);
     setShowShopSwitcher(false);
     setNewShopName('');
@@ -131,24 +142,24 @@ export const MoreMenu: React.FC<Props> = ({ onNavigateToImport, onNavigateToOver
 
       {/* Multi-Shop Profile Management Card */}
       <div className="bg-white rounded-card p-5 border border-[#E5EAE7] shadow-subtle space-y-3">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <div className="w-10 h-10 rounded-full bg-emerald-50 text-[#087F5B] flex items-center justify-center">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="flex items-center gap-2.5 min-w-0 flex-1">
+            <div className="w-10 h-10 rounded-full bg-emerald-50 text-[#087F5B] flex items-center justify-center flex-shrink-0">
               <Store className="w-5 h-5" />
             </div>
-            <div>
-              <div className="flex items-center gap-1.5">
-                <h2 className="text-base font-bold text-[#17231E]">{shopName}</h2>
-                <span className="text-[10px] bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded font-mono">
+            <div className="min-w-0 flex-1">
+              <div className="flex flex-wrap items-center gap-1.5">
+                <h2 className="text-base font-bold text-[#17231E] truncate">{shopName}</h2>
+                <span className="text-[10px] bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded font-mono truncate max-w-[130px]" title={activeShopId}>
                   {activeShopId}
                 </span>
               </div>
-              <p className="text-xs text-[#64748B]">
+              <p className="text-xs text-[#64748B] truncate">
                 {upiId ? `UPI: ${upiId}` : 'No UPI ID configured'}
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-shrink-0 self-end sm:self-auto">
             <button
               id="shop-profiles-btn"
               onClick={() => {
@@ -160,6 +171,7 @@ export const MoreMenu: React.FC<Props> = ({ onNavigateToImport, onNavigateToOver
               {shops.length > 1 ? `Shops (${shops.length})` : 'Profiles'}
             </button>
             <button
+              id="edit-shop-btn"
               onClick={() => {
                 setShopInput(shopName);
                 setUpiInput(upiId);
@@ -263,9 +275,10 @@ export const MoreMenu: React.FC<Props> = ({ onNavigateToImport, onNavigateToOver
           <form onSubmit={handleSaveShopSettings} className="pt-3 border-t border-slate-100 space-y-3 animate-in fade-in">
             <div>
               <label className="block text-xs font-semibold text-[#17231E] uppercase tracking-wider mb-1">
-                Shop Name
+                {t.shopNameLabel}
               </label>
               <input
+                id="shop-name-input"
                 type="text"
                 value={shopInput}
                 onChange={(e) => setShopInput(e.target.value)}
@@ -276,25 +289,27 @@ export const MoreMenu: React.FC<Props> = ({ onNavigateToImport, onNavigateToOver
 
             <div>
               <label className="block text-xs font-semibold text-[#17231E] uppercase tracking-wider mb-1">
-                UPI ID (for WhatsApp Pay Links)
+                {t.upiIdLabel}
               </label>
               <input
+                id="shop-upi-input"
                 type="text"
                 value={upiInput}
                 onChange={(e) => setUpiInput(e.target.value)}
-                placeholder="e.g. shopname@okaxis"
+                placeholder="e.g. exampleupi@hdjcbank"
                 className="w-full px-3 py-2 rounded-inp border border-[#E5EAE7] text-sm font-medium outline-none focus:border-[#087F5B]"
               />
               <p className="text-[11px] text-slate-400 mt-1">
-                When provided, an upi:// payment link is automatically appended to WhatsApp reminders.
+                {t.upiHelp}
               </p>
             </div>
 
             <button
+              id="save-shop-settings-btn"
               type="submit"
               className="w-full py-2.5 bg-[#087F5B] hover:bg-[#066348] text-white rounded-btn text-xs font-bold shadow-sm"
             >
-              Save Shop Details
+              {t.saveShopDetails || 'Save Shop Details'}
             </button>
           </form>
         )}
@@ -309,13 +324,13 @@ export const MoreMenu: React.FC<Props> = ({ onNavigateToImport, onNavigateToOver
             </div>
             <div>
               <div className="flex items-center gap-1.5">
-                <h2 className="text-sm font-bold text-white">Encrypted Backup Vault</h2>
+                <h2 className="text-sm font-bold text-white">{t.encryptedVault}</h2>
                 <span className="text-[10px] bg-emerald-950 text-emerald-300 px-2 py-0.5 rounded border border-emerald-800 font-mono">
                   AES-256-GCM
                 </span>
               </div>
               <p className="text-[11px] text-slate-300 mt-0.5">
-                Export or restore a password-protected .hisaab archive of your complete ledger.
+                {t.encryptedVaultSubtext}
               </p>
             </div>
           </div>
@@ -331,7 +346,7 @@ export const MoreMenu: React.FC<Props> = ({ onNavigateToImport, onNavigateToOver
             className="py-2.5 px-3 bg-[#087F5B] hover:bg-[#066348] text-white rounded-btn text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-sm active:scale-95"
           >
             <Download className="w-3.5 h-3.5" />
-            <span>Create Backup</span>
+            <span>{t.createBackup}</span>
           </button>
           <button
             id="open-vault-restore-btn"
@@ -342,7 +357,7 @@ export const MoreMenu: React.FC<Props> = ({ onNavigateToImport, onNavigateToOver
             className="py-2.5 px-3 bg-slate-700 hover:bg-slate-600 text-white border border-slate-600 rounded-btn text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-sm active:scale-95"
           >
             <Upload className="w-3.5 h-3.5" />
-            <span>Restore Ledger</span>
+            <span>{t.restoreLedger}</span>
           </button>
         </div>
       </div>
@@ -359,8 +374,8 @@ export const MoreMenu: React.FC<Props> = ({ onNavigateToImport, onNavigateToOver
               <Clock className="w-5 h-5" />
             </div>
             <div>
-              <p className="text-sm font-bold text-[#17231E]">Overdue Customers</p>
-              <p className="text-xs text-[#64748B]">View customers ranked by days since last payment</p>
+              <p className="text-sm font-bold text-[#17231E]">{t.overdueCustomers}</p>
+              <p className="text-xs text-[#64748B]">{t.overdueSubtext}</p>
             </div>
           </div>
           <ChevronRight className="w-4 h-4 text-slate-400" />
@@ -377,7 +392,7 @@ export const MoreMenu: React.FC<Props> = ({ onNavigateToImport, onNavigateToOver
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <p className="text-sm font-bold text-[#17231E]">Import Ledger Data</p>
+                <p className="text-sm font-bold text-[#17231E]">{t.importData}</p>
                 <span className="text-[10px] font-bold uppercase bg-emerald-100 text-[#066348] px-2 py-0.5 rounded-full">
                   JSON
                 </span>
@@ -400,7 +415,7 @@ export const MoreMenu: React.FC<Props> = ({ onNavigateToImport, onNavigateToOver
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <p className="text-sm font-bold text-[#17231E]">Export to Excel (.xlsx)</p>
+                <p className="text-sm font-bold text-[#17231E]">{t.exportExcel}</p>
                 <span className="text-[10px] font-bold uppercase bg-emerald-100 text-[#066348] px-2 py-0.5 rounded-full">
                   Template
                 </span>
@@ -423,7 +438,7 @@ export const MoreMenu: React.FC<Props> = ({ onNavigateToImport, onNavigateToOver
               <Download className="w-5 h-5" />
             </div>
             <div>
-              <p className="text-sm font-bold text-[#17231E]">Export to CSV</p>
+              <p className="text-sm font-bold text-[#17231E]">{t.exportCsv}</p>
               <p className="text-xs text-[#64748B]">Download full customer & transaction CSV file</p>
             </div>
           </div>
@@ -440,7 +455,7 @@ export const MoreMenu: React.FC<Props> = ({ onNavigateToImport, onNavigateToOver
               <Sparkles className="w-5 h-5" />
             </div>
             <div>
-              <p className="text-sm font-bold text-[#17231E]">Load Sample Customers</p>
+              <p className="text-sm font-bold text-[#17231E]">{t.loadSampleCustomers}</p>
               <p className="text-xs text-[#64748B]">1-click populate sample customer accounts & transactions</p>
             </div>
           </div>
@@ -451,15 +466,16 @@ export const MoreMenu: React.FC<Props> = ({ onNavigateToImport, onNavigateToOver
       {/* Language Toggle & System Info */}
       <div className="bg-white rounded-card p-5 border border-[#E5EAE7] shadow-subtle space-y-4">
         {/* Language Toggle */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center gap-2.5">
             <Globe className="w-4 h-4 text-[#087F5B]" />
             <span className="text-xs font-bold text-[#17231E] uppercase tracking-wider">
-              Language / భాష
+              Language / భాష / भाषा
             </span>
           </div>
           <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-lg">
             <button
+              id="lang-en-btn"
               onClick={() => setLanguage('en')}
               className={`px-2.5 py-1 text-xs font-bold rounded-md transition-all ${
                 language === 'en'
@@ -470,6 +486,7 @@ export const MoreMenu: React.FC<Props> = ({ onNavigateToImport, onNavigateToOver
               English
             </button>
             <button
+              id="lang-te-btn"
               onClick={() => setLanguage('te')}
               className={`px-2.5 py-1 text-xs font-bold rounded-md transition-all ${
                 language === 'te'
@@ -479,6 +496,17 @@ export const MoreMenu: React.FC<Props> = ({ onNavigateToImport, onNavigateToOver
             >
               తెలుగు (Telugu)
             </button>
+            <button
+              id="lang-hi-btn"
+              onClick={() => setLanguage('hi')}
+              className={`px-2.5 py-1 text-xs font-bold rounded-md transition-all ${
+                language === 'hi'
+                  ? 'bg-white text-[#087F5B] shadow-sm'
+                  : 'text-slate-500 hover:text-slate-800'
+              }`}
+            >
+              हिन्दी (Hindi)
+            </button>
           </div>
         </div>
 
@@ -486,7 +514,7 @@ export const MoreMenu: React.FC<Props> = ({ onNavigateToImport, onNavigateToOver
         <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
           <div className="flex items-center gap-2 text-slate-600">
             <Calendar className="w-4 h-4 text-slate-400" />
-            <span>Effective System Date:</span>
+            <span>{t.effectiveDateLabel}:</span>
           </div>
           <div className="flex items-center gap-1.5 font-bold text-slate-800">
             <span>{effectiveToday}</span>
@@ -501,12 +529,12 @@ export const MoreMenu: React.FC<Props> = ({ onNavigateToImport, onNavigateToOver
       <div className="bg-amber-50/70 rounded-card p-4 border border-amber-200/80 flex items-start gap-3">
         <AlertTriangle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
         <div className="text-xs text-amber-900 leading-relaxed">
-          <p className="font-bold text-amber-950">Local Browser Storage Notice</p>
+          <p className="font-bold text-amber-950">{t.storageNoticeTitle}</p>
           <p className="text-[11px] text-amber-800 mt-0.5">
-            Hisaab operates local-first for 100% privacy. All records are stored directly inside this browser. Clearing browser history, site cookies, or website data will remove your local ledger.
+            {t.storageNoticeText}
           </p>
           <p className="text-[11px] text-amber-900 font-semibold mt-1">
-            Tip: Export an Encrypted Backup (.hisaab) regularly to keep a safe, portable copy of your ledger.
+            {t.storageNoticeTip}
           </p>
         </div>
       </div>
@@ -553,9 +581,9 @@ export const MoreMenu: React.FC<Props> = ({ onNavigateToImport, onNavigateToOver
         {!showClearConfirm ? (
           <div className="flex items-center justify-between">
             <div className="pr-3">
-              <p className="text-xs font-bold text-rose-900">Reset Local Ledger</p>
+              <p className="text-xs font-bold text-rose-900">{t.resetLedgerTitle}</p>
               <p className="text-[11px] text-rose-700 mt-0.5">
-                Deletes this shop's saved ledger from this browser only. Other shops and devices are not affected.
+                {t.resetLedgerSubtext}
               </p>
             </div>
             <button
@@ -563,7 +591,7 @@ export const MoreMenu: React.FC<Props> = ({ onNavigateToImport, onNavigateToOver
               onClick={() => setShowClearConfirm(true)}
               className="py-1.5 px-3 bg-white border border-rose-300 text-rose-700 rounded-lg text-xs font-bold hover:bg-rose-50 flex-shrink-0"
             >
-              Reset Ledger
+              {t.resetLedgerBtn}
             </button>
           </div>
         ) : (
@@ -572,10 +600,10 @@ export const MoreMenu: React.FC<Props> = ({ onNavigateToImport, onNavigateToOver
               <AlertTriangle className="w-5 h-5 text-rose-600 flex-shrink-0 mt-0.5" />
               <div>
                 <p className="text-xs font-bold">
-                  Reset ledger for "{shopName}"?
+                  {language === 'en' ? `Reset ledger for "${shopName}"?` : `${t.resetConfirmTitle} ("${shopName}")`}
                 </p>
                 <p className="text-[11px] text-rose-700 mt-1">
-                  This will permanently delete all customer accounts, credit records, payments, and receipt attachments for <strong>{shopName}</strong> from this browser only. Other shop profiles and other devices will not be affected.
+                  {t.resetConfirmText} <strong>{shopName}</strong>
                 </p>
               </div>
             </div>
@@ -586,14 +614,14 @@ export const MoreMenu: React.FC<Props> = ({ onNavigateToImport, onNavigateToOver
                 onClick={() => setShowClearConfirm(false)}
                 className="flex-1 py-2 bg-white border border-slate-200 text-slate-700 rounded-lg text-xs font-bold hover:bg-slate-50"
               >
-                Cancel
+                {t.cancel}
               </button>
               <button
                 id="reset-confirm-btn"
                 onClick={handleClearActiveShop}
                 className="flex-1 py-2 bg-rose-600 text-white rounded-lg text-xs font-bold hover:bg-rose-700"
               >
-                Yes, Reset {shopName}
+                {language === 'en' ? `Yes, Reset ${shopName}` : `${t.resetConfirmBtn} (${shopName})`}
               </button>
             </div>
           </div>

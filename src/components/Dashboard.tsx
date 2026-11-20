@@ -111,7 +111,7 @@ export const Dashboard: React.FC<Props> = ({
               {t.totalOutstanding}
             </span>
             <span className="px-2.5 py-0.5 rounded-full bg-white/15 text-[11px] font-semibold text-white backdrop-blur-sm">
-              Live Ledger
+              {t.liveLedger}
             </span>
           </div>
 
@@ -163,7 +163,7 @@ export const Dashboard: React.FC<Props> = ({
             </div>
             <div className="min-w-0">
               <span className="text-[10px] font-bold text-amber-800 uppercase tracking-wider block">
-                Top Defaulter
+                {t.topDefaulter}
               </span>
               <p className="text-sm font-bold text-slate-800 truncate">
                 {overallSummary.topDefaulter.name} — <span className="text-amber-900 font-extrabold">{formatINR(overallSummary.topDefaulter.balance)}</span>
@@ -178,7 +178,7 @@ export const Dashboard: React.FC<Props> = ({
       <div className="space-y-3 pt-1">
         <div className="flex items-center gap-2.5">
           {/* Search Input */}
-          <div className="relative flex-1">
+          <div className="relative flex-1 min-w-0">
             <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
               <Search className="w-4 h-4" />
             </div>
@@ -194,7 +194,7 @@ export const Dashboard: React.FC<Props> = ({
                 onClick={() => setSearchQuery('')}
                 className="absolute inset-y-0 right-0 pr-3 flex items-center text-xs text-slate-400 hover:text-slate-600 font-medium"
               >
-                Clear
+                {t.clearSearch}
               </button>
             )}
           </div>
@@ -202,10 +202,10 @@ export const Dashboard: React.FC<Props> = ({
           {/* Add Customer Action Button */}
           <button
             onClick={onOpenAddCustomer}
-            className="flex items-center gap-1.5 py-2.5 px-3.5 bg-[#087F5B] hover:bg-[#066348] text-white rounded-btn font-bold text-sm shadow-md hover:shadow-lg transition-all flex-shrink-0 active:scale-95"
+            className="flex items-center gap-1.5 py-2.5 px-3 bg-[#087F5B] hover:bg-[#066348] text-white rounded-btn font-bold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex-shrink-0 active:scale-95 whitespace-nowrap"
           >
-            <UserPlus className="w-4 h-4" />
-            <span>+ Add Customer</span>
+            <UserPlus className="w-4 h-4 flex-shrink-0" />
+            <span>+ {t.addCustomer}</span>
           </button>
 
           {/* Quick Add Entry if customers exist */}
@@ -216,7 +216,7 @@ export const Dashboard: React.FC<Props> = ({
               title="Add credit or payment entry"
             >
               <PlusCircle className="w-4 h-4" />
-              <span>+ Entry</span>
+              <span>+ {t.addEntry}</span>
             </button>
           )}
         </div>
@@ -233,7 +233,7 @@ export const Dashboard: React.FC<Props> = ({
               onClick={onNavigateToOverdue}
               className="text-xs font-semibold text-[#087F5B] hover:underline"
             >
-              View Overdue →
+              {t.viewOverdue} →
             </button>
           )}
         </div>

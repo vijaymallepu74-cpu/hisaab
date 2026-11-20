@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useMemo, useCallback, useRef } from 'react';
-import { Customer, Transaction, CustomerSummary, OverallSummary, ImportPayload, AppSettings, ShopProfile } from '../types';
+import { Customer, Transaction, CustomerSummary, OverallSummary, ImportPayload, AppSettings, ShopProfile, Language } from '../types';
 import { getEffectiveToday, getDaysDiff } from '../utils/date';
 import { normalizePhone, isValidIndianPhone } from '../utils/format';
 import { 
@@ -27,7 +27,7 @@ interface LedgerContextType {
   shops: ShopProfile[];
   shopName: string;
   upiId: string;
-  language: 'en' | 'te';
+  language: Language;
   effectiveToday: string;
   customers: Customer[];
   transactions: Transaction[];
@@ -52,7 +52,7 @@ interface LedgerContextType {
   importJsonData: (jsonStr: string) => { success: boolean; error?: string; summary?: { shop: string; customers: number; entries: number } };
   setShopName: (name: string) => void;
   setUpiId: (upi: string) => void;
-  setLanguage: (lang: 'en' | 'te') => void;
+  setLanguage: (lang: Language) => void;
   loadSampleDataset: () => void;
   clearAllData: () => void;
   switchShop: (shopId: string) => void;
@@ -67,8 +67,8 @@ const LedgerContext = createContext<LedgerContextType | null>(null);
 const DEFAULT_SHOP_ID = 'shop_default';
 const DEFAULT_SHOP: ShopProfile = {
   id: DEFAULT_SHOP_ID,
-  name: 'My Shop',
-  upiId: '',
+  name: 'Lakshmi Provision Store',
+  upiId: 'exampleupi@hdjcbank',
   createdAt: '2026-01-01T00:00:00.000Z',
 };
 
@@ -90,17 +90,19 @@ export const LedgerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
           if (shopList.length === 0) {
             shopList = [{
               id: DEFAULT_SHOP_ID,
-              name: parsed.shopName || 'My Shop',
-              upiId: parsed.upiId || '',
+              name: parsed.shopName || 'Lakshmi Provision Store',
+              upiId: parsed.upiId || 'exampleupi@hdjcbank',
               createdAt: new Date().toISOString(),
             }];
             activeId = DEFAULT_SHOP_ID;
           }
 
+          const validLang: Language = (parsed.language === 'te' || parsed.language === 'hi') ? parsed.language : 'en';
+
           return {
             activeShopId: activeId,
             shops: shopList,
-            language: parsed.language === 'te' ? 'te' : 'en',
+            language: validLang,
           };
         }
       }
@@ -539,6 +541,7 @@ export const LedgerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         const newShopProfile: ShopProfile = {
           id: targetShopId,
           name: targetShopName,
+          upiId: 'exampleupi@hdjcbank',
           createdAt: new Date().toISOString(),
         };
         setSettings((prev) => ({
@@ -678,7 +681,7 @@ export const LedgerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     }));
   }, []);
 
-  const setLanguage = useCallback((lang: 'en' | 'te') => {
+  const setLanguage = useCallback((lang: Language) => {
     setSettings((prev) => ({ ...prev, language: lang }));
   }, []);
 
@@ -718,7 +721,7 @@ export const LedgerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     const newProfile: ShopProfile = {
       id: newId,
       name: trimmed,
-      upiId: upiId?.trim() || '',
+      upiId: upiId?.trim() || 'exampleupi@hdjcbank',
       createdAt: new Date().toISOString(),
     };
 

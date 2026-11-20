@@ -26,10 +26,12 @@ export interface ShopProfile {
   createdAt: string;
 }
 
+export type Language = 'en' | 'te' | 'hi';
+
 export interface AppSettings {
   activeShopId: string;
   shops: ShopProfile[];
-  language: 'en' | 'te'; // English default, Telugu optional
+  language: Language; // English default, Telugu, Hindi
   effectiveDateOverride?: string; // Optional manual override for testing if no ?today in URL
 }
 

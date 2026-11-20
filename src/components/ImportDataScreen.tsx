@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Upload, ArrowLeft, CheckCircle2, AlertCircle, Sparkles, FileCode2 } from 'lucide-react';
 import { useLedger } from '../context/LedgerContext';
 import { useToast } from './Toast';
+import { translations } from '../utils/i18n';
 
 interface Props {
   onBack: () => void;
@@ -9,7 +10,8 @@ interface Props {
 }
 
 export const ImportDataScreen: React.FC<Props> = ({ onBack, onSuccessNavigate }) => {
-  const { importJsonData } = useLedger();
+  const { importJsonData, language } = useLedger();
+  const t = translations[language];
   const { showToast } = useToast();
 
   const [jsonText, setJsonText] = useState('');
@@ -68,15 +70,15 @@ export const ImportDataScreen: React.FC<Props> = ({ onBack, onSuccessNavigate })
           className="flex items-center gap-1.5 text-slate-600 hover:text-[#087F5B] font-semibold text-sm py-1 px-2 -ml-2 rounded-lg hover:bg-slate-100 transition-colors"
         >
           <ArrowLeft className="w-5 h-5" />
-          <span>Back</span>
+          <span>{t.back}</span>
         </button>
         <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">
-          Data Import
+          JSON
         </span>
       </div>
 
       <div>
-        <h1 className="text-xl font-bold text-[#17231E]">Import Ledger Data</h1>
+        <h1 className="text-xl font-bold text-[#17231E]">{t.importData}</h1>
         <p className="text-xs text-[#64748B] mt-0.5">
           Paste JSON dataset to populate shop customers and transaction ledger.
         </p>

@@ -67,7 +67,7 @@ export const CustomerLedger: React.FC<Props> = ({ phone, onBack, onPreviewScreen
           className="flex items-center gap-1.5 text-slate-600 hover:text-[#087F5B] font-semibold text-sm py-1 px-2 -ml-2 rounded-lg hover:bg-slate-100 transition-colors"
         >
           <ArrowLeft className="w-5 h-5" />
-          <span>Back</span>
+          <span>{t.back}</span>
         </button>
 
         {/* WhatsApp Reminder Button with required evaluator selector */}
@@ -80,7 +80,7 @@ export const CustomerLedger: React.FC<Props> = ({ phone, onBack, onPreviewScreen
             className="flex items-center gap-1.5 bg-[#25D366] hover:bg-[#20ba59] text-white text-xs font-bold py-2 px-3.5 rounded-btn shadow-sm hover:shadow transition-all active:scale-95"
           >
             <MessageCircle className="w-4 h-4 fill-white text-transparent" />
-            <span>Remind on WhatsApp</span>
+            <span>{t.remindWhatsApp}</span>
           </a>
         )}
       </div>
@@ -91,6 +91,9 @@ export const CustomerLedger: React.FC<Props> = ({ phone, onBack, onPreviewScreen
           {getInitials(customer.name)}
         </div>
         <div className="flex-1 min-w-0">
+          <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-full inline-block mb-1">
+            {t.customerLedger}
+          </span>
           <h1 className="text-xl font-bold text-[#17231E] truncate">{customer.name}</h1>
           <p className="text-xs text-[#64748B] font-medium tracking-wide mt-0.5">
             +91 {customer.phone}
@@ -102,7 +105,7 @@ export const CustomerLedger: React.FC<Props> = ({ phone, onBack, onPreviewScreen
       <div className="bg-white rounded-card p-5 border border-[#E5EAE7] shadow-subtle space-y-4">
         <div>
           <span className="text-[11px] font-bold uppercase tracking-wider text-[#64748B]">
-            Current Net Balance
+            {t.currentBalance}
           </span>
           <div className="flex items-baseline gap-2 mt-1">
             <span
@@ -118,10 +121,10 @@ export const CustomerLedger: React.FC<Props> = ({ phone, onBack, onPreviewScreen
             </span>
             <span className="text-xs font-medium text-slate-500">
               {customer.balance > 0
-                ? 'Credit (Customer owes you)'
+                ? t.creditOwed
                 : customer.balance < 0
-                ? 'Advance / Overpaid'
-                : 'Settled'}
+                ? t.advanceOverpaid
+                : t.settled}
             </span>
           </div>
         </div>
@@ -129,7 +132,7 @@ export const CustomerLedger: React.FC<Props> = ({ phone, onBack, onPreviewScreen
         <div className="grid grid-cols-2 gap-3 pt-3 border-t border-slate-100">
           <div className="bg-emerald-50/60 p-3 rounded-xl border border-emerald-100">
             <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-800">
-              Total Credit
+              {t.totalCredit}
             </span>
             <p className="text-lg font-bold text-[#16A36A] mt-0.5">
               {formatINR(customer.totalCredit)}
@@ -137,7 +140,7 @@ export const CustomerLedger: React.FC<Props> = ({ phone, onBack, onPreviewScreen
           </div>
           <div className="bg-rose-50/60 p-3 rounded-xl border border-rose-100">
             <span className="text-[10px] font-bold uppercase tracking-wider text-rose-800">
-              Total Received
+              {t.totalReceived}
             </span>
             <p className="text-lg font-bold text-[#E76F51] mt-0.5">
               {formatINR(customer.totalPayment)}
@@ -153,7 +156,7 @@ export const CustomerLedger: React.FC<Props> = ({ phone, onBack, onPreviewScreen
           className="flex items-center justify-center gap-2 py-3.5 px-4 bg-[#16A36A] hover:bg-[#138959] text-white rounded-btn font-bold text-sm shadow-md hover:shadow-lg transition-all active:scale-[0.98]"
         >
           <Plus className="w-5 h-5 stroke-[2.5]" />
-          <span>Give Credit</span>
+          <span>{t.giveCredit}</span>
         </button>
 
         <button
@@ -161,7 +164,7 @@ export const CustomerLedger: React.FC<Props> = ({ phone, onBack, onPreviewScreen
           className="flex items-center justify-center gap-2 py-3.5 px-4 bg-[#E76F51] hover:bg-[#d65e40] text-white rounded-btn font-bold text-sm shadow-md hover:shadow-lg transition-all active:scale-[0.98]"
         >
           <Minus className="w-5 h-5 stroke-[2.5]" />
-          <span>Receive Payment</span>
+          <span>{t.receivePayment}</span>
         </button>
       </div>
 

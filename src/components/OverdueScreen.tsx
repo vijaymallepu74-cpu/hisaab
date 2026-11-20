@@ -4,6 +4,7 @@ import { useLedger } from '../context/LedgerContext';
 import { formatINR, getInitials } from '../utils/format';
 import { formatDisplayDate } from '../utils/date';
 import { buildWhatsAppUrl } from '../utils/whatsapp';
+import { translations } from '../utils/i18n';
 
 interface Props {
   onSelectCustomer: (phone: string) => void;
@@ -11,7 +12,8 @@ interface Props {
 }
 
 export const OverdueScreen: React.FC<Props> = ({ onSelectCustomer, onBack }) => {
-  const { customerSummaries, shopName, upiId, effectiveToday } = useLedger();
+  const { customerSummaries, shopName, upiId, effectiveToday, language } = useLedger();
+  const t = translations[language];
 
   // Filter only customers with positive balance (money owed to shop)
   const { overdueWithPayments, neverPaid } = useMemo(() => {
@@ -51,17 +53,17 @@ export const OverdueScreen: React.FC<Props> = ({ onSelectCustomer, onBack }) => 
           className="flex items-center gap-1.5 text-slate-600 hover:text-[#087F5B] font-semibold text-sm py-1 px-2 -ml-2 rounded-lg hover:bg-slate-100 transition-colors"
         >
           <ArrowLeft className="w-5 h-5" />
-          <span>Back</span>
+          <span>{t.back}</span>
         </button>
         <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-          As of {formatDisplayDate(effectiveToday)}
+          {formatDisplayDate(effectiveToday)}
         </span>
       </div>
 
       <div>
-        <h1 className="text-xl font-bold text-[#17231E]">Overdue Customers</h1>
+        <h1 className="text-xl font-bold text-[#17231E]">{t.overdueCustomers}</h1>
         <p className="text-xs text-[#64748B] mt-0.5">
-          {totalDebtors} customer{totalDebtors === 1 ? '' : 's'} with pending balance, ranked by payment delay
+          {totalDebtors} {t.overdueSubtext}
         </p>
       </div>
 
@@ -70,9 +72,9 @@ export const OverdueScreen: React.FC<Props> = ({ onSelectCustomer, onBack }) => 
           <div className="w-12 h-12 rounded-full bg-emerald-50 text-[#16A36A] flex items-center justify-center mx-auto mb-3">
             <Clock className="w-6 h-6" />
           </div>
-          <h3 className="text-sm font-bold text-[#17231E]">No overdue balances!</h3>
+          <h3 className="text-sm font-bold text-[#17231E]">{t.noOverdue}</h3>
           <p className="text-xs text-[#64748B] mt-1">
-            All customers have fully cleared their accounts.
+            {t.noOverdueSubtext}
           </p>
         </div>
       ) : (
@@ -82,9 +84,9 @@ export const OverdueScreen: React.FC<Props> = ({ onSelectCustomer, onBack }) => 
             <div className="space-y-2.5">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold text-slate-700 uppercase tracking-wider">
-                  Pending Since Last Payment ({overdueWithPayments.length})
+                  {t.pendingSincePayment} ({overdueWithPayments.length})
                 </span>
-                <span className="text-[11px] text-slate-400">Most delayed first</span>
+                <span className="text-[11px] text-slate-400">{t.mostDelayedFirst}</span>
               </div>
 
               <div className="space-y-2">
@@ -125,11 +127,11 @@ export const OverdueScreen: React.FC<Props> = ({ onSelectCustomer, onBack }) => 
                                 isSevere ? 'text-amber-800' : 'text-slate-600'
                               }`}
                             >
-                              {days} {days === 1 ? 'day' : 'days'} ago
+                              {days} {days === 1 ? t.dayAgo : t.daysAgo}
                             </span>
                           </div>
                           <p className="text-[11px] text-slate-400 mt-0.5">
-                            Last paid: {formatDisplayDate(cust.lastPaymentDate || '')}
+                            {t.lastPaid}: {formatDisplayDate(cust.lastPaymentDate || '')}
                           </p>
                         </div>
                       </div>
@@ -146,7 +148,7 @@ export const OverdueScreen: React.FC<Props> = ({ onSelectCustomer, onBack }) => 
                                 : 'bg-slate-100 text-slate-600'
                             }`}
                           >
-                            {days}d delayed
+                            {days}d {t.delayed}
                           </span>
                         </div>
 
@@ -178,7 +180,7 @@ export const OverdueScreen: React.FC<Props> = ({ onSelectCustomer, onBack }) => 
               <div className="flex items-center gap-2">
                 <AlertCircle className="w-4 h-4 text-rose-600" />
                 <span className="text-xs font-bold text-rose-900 uppercase tracking-wider">
-                  No Payments Made Yet ({neverPaid.length})
+                  {t.neverPaid} ({neverPaid.length})
                 </span>
               </div>
 
@@ -213,7 +215,7 @@ export const OverdueScreen: React.FC<Props> = ({ onSelectCustomer, onBack }) => 
                             +91 {cust.phone}
                           </p>
                           <p className="text-[11px] text-rose-700 font-semibold mt-0.5">
-                            Credit active for {creditDays} days • Never paid
+                            {t.firstCredit}: {creditDays} {t.daysAgo} • {t.noPaymentYet}
                           </p>
                         </div>
                       </div>
@@ -224,7 +226,7 @@ export const OverdueScreen: React.FC<Props> = ({ onSelectCustomer, onBack }) => 
                             {formatINR(cust.balance)}
                           </span>
                           <span className="text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-full bg-rose-100 text-rose-800 inline-block mt-0.5">
-                            No Payments
+                            {t.noPaymentYet}
                           </span>
                         </div>
 
