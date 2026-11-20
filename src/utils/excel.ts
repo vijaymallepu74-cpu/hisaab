@@ -85,7 +85,10 @@ export async function exportLedgerToExcel({
     const val = String(cell.value || '').trim().toLowerCase();
     if (val.includes('sno') || val.includes('s.no') || val === 's no' || val === 'sl no') {
       colSno = colNumber;
-    } else if (val.includes('customer') || (val.includes('name') && !val.includes('shop'))) {
+    } else if (val.includes('balance')) {
+      // Must check balance before 'customer' or 'name' because header is 'Customer Current Balance (INR)'
+      colBalance = colNumber;
+    } else if (val.includes('name') || val === 'customer' || val.includes('customer name')) {
       colName = colNumber;
     } else if (val.includes('phone') || val.includes('mobile')) {
       colPhone = colNumber;
@@ -97,19 +100,34 @@ export async function exportLedgerToExcel({
       colDate = colNumber;
     } else if (val.includes('note') || val.includes('desc')) {
       colNote = colNumber;
-    } else if (val.includes('balance')) {
-      colBalance = colNumber;
     }
   });
 
   // Default fallback if headers were not labeled
-  if (colName === -1) colName = colSno !== -1 ? 2 : 1;
-  if (colPhone === -1) colPhone = colSno !== -1 ? 3 : 2;
-  if (colType === -1) colType = colSno !== -1 ? 4 : 3;
-  if (colAmount === -1) colAmount = colSno !== -1 ? 5 : 4;
-  if (colDate === -1) colDate = colSno !== -1 ? 6 : 5;
-  if (colNote === -1) colNote = colSno !== -1 ? 7 : 6;
-  if (colBalance === -1) colBalance = colSno !== -1 ? 8 : 7;
+  if (colSno === -1) colSno = 1;
+  if (colName === -1) colName = 2;
+  if (colPhone === -1) colPhone = 3;
+  if (colType === -1) colType = 4;
+  if (colAmount === -1) colAmount = 5;
+  if (colDate === -1) colDate = 6;
+  if (colNote === -1) colNote = 7;
+  if (colBalance === -1) colBalance = 8;
+
+  // Ensure column widths are sufficient so dates (2026-XX-XX) and names are not clipped
+  const ensureColWidth = (colIdx: number, minWidth: number) => {
+    if (colIdx !== -1) {
+      const col = worksheet.getColumn(colIdx);
+      const currWidth = typeof col.width === 'number' ? col.width : 0;
+      if (currWidth < minWidth) {
+        col.width = minWidth;
+      }
+    }
+  };
+  ensureColWidth(colSno, 8);
+  ensureColWidth(colName, 20);
+  ensureColWidth(colDate, 14);
+  ensureColWidth(colNote, 18);
+  ensureColWidth(colBalance, 20);
 
   // 4. Flatten all customer ledger entries
   interface FlattenedEntry {
@@ -159,6 +177,8 @@ export async function exportLedgerToExcel({
     const row = worksheet.getRow(rowNum);
     const isExtendedRow = rowNum > totalTemplateRows;
 
+    row.height = 20;
+
     // Sno if present
     if (colSno !== -1) {
       const cell = row.getCell(colSno);
@@ -169,6 +189,7 @@ export async function exportLedgerToExcel({
     // 1. Customer Name
     const nameCell = row.getCell(colName);
     nameCell.value = rec.customerName;
+    nameCell.alignment = { horizontal: 'center', vertical: 'middle' };
 
     // 2. Phone Number (ensure 10-digit text value)
     const phoneCell = row.getCell(colPhone);
@@ -185,7 +206,7 @@ export async function exportLedgerToExcel({
     const amountCell = row.getCell(colAmount);
     amountCell.value = rec.amount;
     amountCell.numFmt = '#,##0';
-    amountCell.alignment = { horizontal: 'right', vertical: 'middle' };
+    amountCell.alignment = { horizontal: 'center', vertical: 'middle' };
 
     // 5. Date
     const dateCell = row.getCell(colDate);
@@ -195,16 +216,31 @@ export async function exportLedgerToExcel({
     // 6. Note
     const noteCell = row.getCell(colNote);
     noteCell.value = rec.note;
+    noteCell.alignment = { horizontal: 'center', vertical: 'middle' };
 
     // 7. Customer Current Balance (INR)
     const balanceCell = row.getCell(colBalance);
     balanceCell.value = rec.currentBalance;
     balanceCell.numFmt = '#,##0';
-    balanceCell.alignment = { horizontal: 'right', vertical: 'middle' };
+    balanceCell.alignment = { horizontal: 'center', vertical: 'middle' };
+
+    // Ensure complete borders and template formatting across all cells
+    const sampleBorder = templateRow.getCell(1).border || {
+      left: { style: 'thin' },
+      right: { style: 'thin' },
+      top: { style: 'thin' },
+      bottom: { style: 'thin' }
+    };
+
+    for (let c = 1; c <= 8; c++) {
+      const cell = row.getCell(c);
+      if (!cell.border) {
+        cell.border = JSON.parse(JSON.stringify(sampleBorder));
+      }
+    }
 
     // If extending beyond preformatted rows, copy styles from template row
     if (isExtendedRow) {
-      row.height = templateRow.height || 20;
       const maxCols = Math.max(8, worksheet.columnCount);
       for (let c = 1; c <= maxCols; c++) {
         const tCell = templateRow.getCell(c);
