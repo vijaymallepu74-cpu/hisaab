@@ -13,7 +13,6 @@ import {
   ShieldCheck,
   AlertTriangle,
   HelpCircle,
-  CheckCircle2,
   FileSpreadsheet
 } from 'lucide-react';
 import { useLedger } from '../context/LedgerContext';
@@ -62,9 +61,6 @@ export const MoreMenu: React.FC<Props> = ({ onNavigateToImport, onNavigateToOver
 
   // Clear data dialog state
   const [showClearConfirm, setShowClearConfirm] = useState(false);
-
-  // Evaluator panel collapse state
-  const [showEvaluatorDetails, setShowEvaluatorDetails] = useState(true);
 
   // Help FAQ collapse state
   const [showHelpDetails, setShowHelpDetails] = useState(false);
@@ -599,66 +595,6 @@ export const MoreMenu: React.FC<Props> = ({ onNavigateToImport, onNavigateToOver
               >
                 Yes, Reset {shopName}
               </button>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* Hackathon 10 — Evaluator Compatibility Panel */}
-      <div className="p-4 bg-slate-900 text-slate-300 rounded-card text-xs space-y-2.5">
-        <div 
-          onClick={() => setShowEvaluatorDetails(!showEvaluatorDetails)}
-          className="flex items-center justify-between text-white font-bold cursor-pointer select-none"
-        >
-          <div className="flex items-center gap-2">
-            <ShieldCheck className="w-4 h-4 text-emerald-400" />
-            <span>Hackathon 10 — Evaluator Compatibility</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="text-emerald-400 text-[10px] bg-emerald-950 px-2 py-0.5 rounded border border-emerald-800">
-              8/8 SELECTORS READY
-            </span>
-            <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform ${showEvaluatorDetails ? 'rotate-180' : ''}`} />
-          </div>
-        </div>
-
-        <p className="text-[10px] text-slate-400 leading-normal">
-          Technical verification notice: Selector checks verify DOM automation interfaces for Hackathon 10 evaluation. This indicates syntax & selector compliance, not an external security certification or bank accreditation.
-        </p>
-
-        {showEvaluatorDetails && (
-          <div className="grid grid-cols-2 gap-2 text-[11px] font-mono text-slate-300 pt-2 border-t border-slate-800">
-            <div className="flex items-center gap-1.5">
-              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-              <span>#total-outstanding</span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-              <span>[data-customer]</span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-              <span>[data-balance]</span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-              <span>a[data-remind]</span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-              <span>#import-box</span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-              <span>#import-go</span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-              <span>#shot-input</span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-              <span>img[data-shot]</span>
             </div>
           </div>
         )}
