@@ -71,7 +71,7 @@ export const ImportDataScreen: React.FC<Props> = ({ onBack, onSuccessNavigate })
           <span>Back</span>
         </button>
         <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">
-          Hackathon Evaluator
+          Data Import
         </span>
       </div>
 

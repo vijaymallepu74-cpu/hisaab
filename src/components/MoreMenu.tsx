@@ -379,10 +379,10 @@ export const MoreMenu: React.FC<Props> = ({ onNavigateToImport, onNavigateToOver
               <div className="flex items-center gap-2">
                 <p className="text-sm font-bold text-[#17231E]">Import Ledger Data</p>
                 <span className="text-[10px] font-bold uppercase bg-emerald-100 text-[#066348] px-2 py-0.5 rounded-full">
-                  Evaluator
+                  JSON
                 </span>
               </div>
-              <p className="text-xs text-[#64748B]">Paste JSON dataset with #import-box & #import-go</p>
+              <p className="text-xs text-[#64748B]">Import customer and transaction records from a JSON file</p>
             </div>
           </div>
           <ChevronRight className="w-4 h-4 text-slate-400" />
@@ -430,7 +430,7 @@ export const MoreMenu: React.FC<Props> = ({ onNavigateToImport, onNavigateToOver
           <ChevronRight className="w-4 h-4 text-slate-400" />
         </button>
 
-        {/* Load 8 Sample Customers */}
+        {/* Load Sample Customers */}
         <button
           onClick={handleLoadSample}
           className="w-full p-4 flex items-center justify-between hover:bg-slate-50 transition-colors text-left"
@@ -440,8 +440,8 @@ export const MoreMenu: React.FC<Props> = ({ onNavigateToImport, onNavigateToOver
               <Sparkles className="w-5 h-5" />
             </div>
             <div>
-              <p className="text-sm font-bold text-[#17231E]">Load Acceptance Sample Data</p>
-              <p className="text-xs text-[#64748B]">1-click populate sample-data.json (₹11,820 total)</p>
+              <p className="text-sm font-bold text-[#17231E]">Load Sample Customers</p>
+              <p className="text-xs text-[#64748B]">1-click populate sample customer accounts & transactions</p>
             </div>
           </div>
           <ChevronRight className="w-4 h-4 text-slate-400" />
@@ -491,7 +491,7 @@ export const MoreMenu: React.FC<Props> = ({ onNavigateToImport, onNavigateToOver
           <div className="flex items-center gap-1.5 font-bold text-slate-800">
             <span>{effectiveToday}</span>
             <span className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 font-semibold">
-              {window.location.search.includes('today=') ? '?today parameter active' : 'Local browser date'}
+              {window.location.search.includes('today=') ? 'Simulated Date' : 'Local browser date'}
             </span>
           </div>
         </div>
