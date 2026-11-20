@@ -1,0 +1,305 @@
+{
+ "shop": "Lakshmi Provision Store (fictional)",
+ "customers": [
+  {
+   "name": "Ravi Kumar",
+   "phone": "9000000101"
+  },
+  {
+   "name": "Sunita Devi",
+   "phone": "9000000102"
+  },
+  {
+   "name": "Mohd Irfan",
+   "phone": "9000000103"
+  },
+  {
+   "name": "Anjali Reddy",
+   "phone": "9000000104"
+  },
+  {
+   "name": "Prakash Rao",
+   "phone": "9000000105"
+  },
+  {
+   "name": "Fatima Begum",
+   "phone": "9000000106"
+  },
+  {
+   "name": "Venkat Naidu",
+   "phone": "9000000107"
+  },
+  {
+   "name": "Kavitha S",
+   "phone": "9000000108"
+  }
+ ],
+ "entries": [
+  {
+   "phone": "9000000101",
+   "type": "credit",
+   "amount": 250,
+   "date": "2026-09-27",
+   "note": "groceries"
+  },
+  {
+   "phone": "9000000101",
+   "type": "credit",
+   "amount": 1500,
+   "date": "2026-10-06",
+   "note": "groceries"
+  },
+  {
+   "phone": "9000000101",
+   "type": "payment",
+   "amount": 180,
+   "date": "2026-10-10",
+   "note": "paid on UPI"
+  },
+  {
+   "phone": "9000000101",
+   "type": "credit",
+   "amount": 420,
+   "date": "2026-10-19",
+   "note": "groceries"
+  },
+  {
+   "phone": "9000000101",
+   "type": "credit",
+   "amount": 180,
+   "date": "2026-10-23",
+   "note": "groceries"
+  },
+  {
+   "phone": "9000000101",
+   "type": "payment",
+   "amount": 1500,
+   "date": "2026-10-25",
+   "note": "paid on UPI"
+  },
+  {
+   "phone": "9000000102",
+   "type": "credit",
+   "amount": 1500,
+   "date": "2026-09-20",
+   "note": "groceries"
+  },
+  {
+   "phone": "9000000102",
+   "type": "credit",
+   "amount": 1200,
+   "date": "2026-09-22",
+   "note": "groceries"
+  },
+  {
+   "phone": "9000000102",
+   "type": "payment",
+   "amount": 120,
+   "date": "2026-09-25",
+   "note": "paid on UPI"
+  },
+  {
+   "phone": "9000000102",
+   "type": "credit",
+   "amount": 340,
+   "date": "2026-09-27",
+   "note": "groceries"
+  },
+  {
+   "phone": "9000000102",
+   "type": "credit",
+   "amount": 1500,
+   "date": "2026-10-02",
+   "note": "groceries"
+  },
+  {
+   "phone": "9000000102",
+   "type": "payment",
+   "amount": 950,
+   "date": "2026-10-04",
+   "note": "paid on UPI"
+  },
+  {
+   "phone": "9000000103",
+   "type": "credit",
+   "amount": 1200,
+   "date": "2026-09-23",
+   "note": "groceries"
+  },
+  {
+   "phone": "9000000103",
+   "type": "credit",
+   "amount": 420,
+   "date": "2026-09-28",
+   "note": "groceries"
+  },
+  {
+   "phone": "9000000103",
+   "type": "payment",
+   "amount": 120,
+   "date": "2026-10-07",
+   "note": "paid on UPI"
+  },
+  {
+   "phone": "9000000103",
+   "type": "credit",
+   "amount": 950,
+   "date": "2026-10-10",
+   "note": "groceries"
+  },
+  {
+   "phone": "9000000103",
+   "type": "credit",
+   "amount": 780,
+   "date": "2026-10-16",
+   "note": "groceries"
+  },
+  {
+   "phone": "9000000103",
+   "type": "payment",
+   "amount": 420,
+   "date": "2026-10-19",
+   "note": "paid on UPI"
+  },
+  {
+   "phone": "9000000104",
+   "type": "credit",
+   "amount": 120,
+   "date": "2026-09-26",
+   "note": "groceries"
+  },
+  {
+   "phone": "9000000104",
+   "type": "credit",
+   "amount": 1500,
+   "date": "2026-09-29",
+   "note": "groceries"
+  },
+  {
+   "phone": "9000000104",
+   "type": "payment",
+   "amount": 780,
+   "date": "2026-10-02",
+   "note": "paid on UPI"
+  },
+  {
+   "phone": "9000000104",
+   "type": "credit",
+   "amount": 420,
+   "date": "2026-10-05",
+   "note": "groceries"
+  },
+  {
+   "phone": "9000000105",
+   "type": "credit",
+   "amount": 120,
+   "date": "2026-09-08",
+   "note": "groceries"
+  },
+  {
+   "phone": "9000000105",
+   "type": "credit",
+   "amount": 340,
+   "date": "2026-09-13",
+   "note": "groceries"
+  },
+  {
+   "phone": "9000000105",
+   "type": "payment",
+   "amount": 230,
+   "date": "2026-09-15",
+   "note": "paid on UPI"
+  },
+  {
+   "phone": "9000000106",
+   "type": "credit",
+   "amount": 1500,
+   "date": "2026-09-26",
+   "note": "groceries"
+  },
+  {
+   "phone": "9000000106",
+   "type": "credit",
+   "amount": 420,
+   "date": "2026-10-01",
+   "note": "groceries"
+  },
+  {
+   "phone": "9000000106",
+   "type": "payment",
+   "amount": 180,
+   "date": "2026-10-08",
+   "note": "paid on UPI"
+  },
+  {
+   "phone": "9000000106",
+   "type": "credit",
+   "amount": 560,
+   "date": "2026-10-14",
+   "note": "groceries"
+  },
+  {
+   "phone": "9000000106",
+   "type": "credit",
+   "amount": 780,
+   "date": "2026-10-16",
+   "note": "groceries"
+  },
+  {
+   "phone": "9000000106",
+   "type": "payment",
+   "amount": 250,
+   "date": "2026-10-19",
+   "note": "paid on UPI"
+  },
+  {
+   "phone": "9000000107",
+   "type": "credit",
+   "amount": 950,
+   "date": "2026-10-08",
+   "note": "groceries"
+  },
+  {
+   "phone": "9000000107",
+   "type": "credit",
+   "amount": 250,
+   "date": "2026-10-17",
+   "note": "groceries"
+  },
+  {
+   "phone": "9000000107",
+   "type": "payment",
+   "amount": 950,
+   "date": "2026-10-22",
+   "note": "paid on UPI"
+  },
+  {
+   "phone": "9000000108",
+   "type": "credit",
+   "amount": 780,
+   "date": "2026-09-17",
+   "note": "groceries"
+  },
+  {
+   "phone": "9000000108",
+   "type": "credit",
+   "amount": 180,
+   "date": "2026-09-25",
+   "note": "groceries"
+  },
+  {
+   "phone": "9000000108",
+   "type": "payment",
+   "amount": 780,
+   "date": "2026-10-03",
+   "note": "paid on UPI"
+  },
+  {
+   "phone": "9000000108",
+   "type": "credit",
+   "amount": 120,
+   "date": "2026-10-08",
+   "note": "groceries"
+  }
+ ]
+}
